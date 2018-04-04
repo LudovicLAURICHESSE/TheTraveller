@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Play">Nouvelle Partie</string>
+    <string name="Leaderboard">Tableau des Scores</string>
+    <string name="Settings">Paramètres</string>
+    <string name="SetTheme">Thème du monde :</string>
+    <string name="SetCharacter">Thème du personnage :</string>
+    <string name="SwitchMusic">Musique :</string>
+    <string name="Hit">Frapper</string>
+    <string name="Jump">Sauter</string>
+    <string name="World">Monde</string>
+    <string name="Character">Personnage</string>
+    <string name="Back">Retour</string>
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Title" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">@dimen/textSize</item>
+    </style>
+
+    <style name="GameControlButton" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">@dimen/GameButton</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+</resources>

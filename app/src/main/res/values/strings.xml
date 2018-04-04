@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name" translatable="false">The Traveller</string>
+    <string name="Play">New Game</string>
+    <string name="Leaderboard">Leaderboard</string>
+    <string name="Settings">Settings</string>
+    <string name="SetTheme">World Theme :</string>
+    <string name="SetCharacter">Character Theme :</string>
+    <string name="SwitchMusic">Music :</string>
+    <string name="SwitchOn" translatable="false">On</string>
+    <string name="SwitchOff" translatable="false">Off</string>
+    <string name="Hit">Hit</string>
+    <string name="Jump">Jump</string>
+    <string name="Score" translatable="false">Score :</string>
+    <string name="World">World</string>
+    <string name="Character">Character</string>
+    <string name="Back">Back</string>
+    <string-array name="UserChoice">
+        <item name="T1">Default</item>
+        <item name="T2">Medieval</item>
+        <item name="T3">Futur</item>
+        <item name="T3">Strange</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+</resources>
