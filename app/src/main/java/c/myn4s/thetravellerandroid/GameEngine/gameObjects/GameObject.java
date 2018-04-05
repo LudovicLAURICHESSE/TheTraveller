@@ -16,12 +16,12 @@ public abstract class GameObject {
     protected static Context mContext; //the context for the gameObjects, used to access the resources
 
     protected BitmapDrawable img=null; //the sprite for the object
-    protected int ressourceInt; //the int that indicate the sprite in the resources
+    protected int resourceInt; //the int that indicate the sprite in the resources
     private int posY; //the position on the width of the screen
     private int posX; //the position on the height of the screen
 
     static protected int BLOCK_SIZE; //the size of a block
-    static protected int BLOCKS_ON_WIDTH = 9; //the number of blocks on the width of the screen
+    static protected int BLOCKS_ON_WIDTH = 7; //the number of blocks on the width of the screen
     static protected int SCREEN_WIDTH;
     static protected int SCREEN_HEIGHT;
 
@@ -31,6 +31,7 @@ public abstract class GameObject {
     private int sizeX; //the size in pixels in x
 
     protected Vector force; //the current force applied to the object
+    private Vector movement; //the movement, applied by the bocks
     private Type type;
 
     /**
@@ -42,11 +43,14 @@ public abstract class GameObject {
      * @param nbBlocksY number of blocks in y
      */
     public GameObject(int startX, int startY, int resourceInt, int nbBlocksX, int nbBlocksY, Type type){
-        this.ressourceInt = resourceInt;
+        this.resourceInt = resourceInt;
         setPosX(startX);
         setPosY(startY);
         blocksX = nbBlocksX;
         blocksY = nbBlocksY;
+
+        setSizeX(blocksX * BLOCK_SIZE);
+        setSizeY(blocksY * BLOCK_SIZE);
 
         force = new Vector(0,0);
         this.setType(type);
@@ -66,7 +70,7 @@ public abstract class GameObject {
         setSizeX(blocksX * BLOCK_SIZE);
         setSizeY(blocksY * BLOCK_SIZE);
 
-        img = setImage(mContext, ressourceInt, getSizeX(), getSizeY());
+        img = setImage(mContext, resourceInt, getSizeX(), getSizeY());
     }
 
     public static void setScreenSize(int width, int height) {
@@ -87,6 +91,10 @@ public abstract class GameObject {
         setPosY(getPosY() + force.getY());
     }
 
+    protected void applyMovement(){
+        setPosX(getPosX() + getMovement().getX());
+        setPosY(getPosY() + getMovement().getY());
+    }
     public void nullifyForce(){
         force = new Vector(0,0);
     }
@@ -128,7 +136,7 @@ public abstract class GameObject {
         return sizeY;
     }
 
-    private void setSizeY(int sizeY) {
+    protected void setSizeY(int sizeY) {
         this.sizeY = sizeY;
     }
 
@@ -136,7 +144,7 @@ public abstract class GameObject {
         return sizeX;
     }
 
-    private void setSizeX(int sizeX) {
+    protected void setSizeX(int sizeX) {
         this.sizeX = sizeX;
     }
 
@@ -158,5 +166,14 @@ public abstract class GameObject {
 
     public void setForce(Vector v){
         force = v;
+    }
+
+
+    public Vector getMovement() {
+        return movement;
+    }
+
+    public void setMovement(Vector movement) {
+        this.movement = movement;
     }
 }

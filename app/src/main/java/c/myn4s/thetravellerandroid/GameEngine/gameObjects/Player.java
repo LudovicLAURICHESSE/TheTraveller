@@ -16,6 +16,7 @@ public class Player extends GameObject {
 
     @Override
     public void update() {
-        applyForce();
+        setPosX(getPosX());
+        //applyForce();
     }
 }

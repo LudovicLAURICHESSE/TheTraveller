@@ -2,10 +2,13 @@ package c.myn4s.thetravellerandroid.GameEngine.blocks;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import c.myn4s.thetravellerandroid.AllDisplays.PlayActivity;
+import c.myn4s.thetravellerandroid.GameEngine.Vector;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.GameObject;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.Type;
 
@@ -13,67 +16,44 @@ import c.myn4s.thetravellerandroid.GameEngine.gameObjects.Type;
  * Created by Myn4s on 04/04/2018.
  */
 
-public class Block {
+public class Block extends GameObject{
+
     private List<GameObject> gameObjects;
-    private int posX;
-    private int finX;
-    private String id;
-    private static final int INCREMENT = -20;
-    private final Context mContext;
 
-    Block(final Context c, List<GameObject> gameObjects, int width, String id){
-        this.gameObjects = gameObjects;
-        mContext = c;
-        this.id = id;
-        this.posX = width;
-        finX = width*2;
+    private static final int INCREMENT = -50;
+
+    /**
+     * Constructor for the GameObject
+     *
+     * @param startX      starting position in x
+     * @param resourceInt id for the sprite
+     */
+    public Block(int startX, int resourceInt ) {
+        super(startX, 0, resourceInt, 20, 15, Type.BLOCK);
+
+        gameObjects = new LinkedList<>();
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void resize(int w, int h) {
-        for (GameObject obj: gameObjects) {
-            obj.resize();
-        }
-    }
-
-    private void addGameObject (GameObject obj){
-        if (obj.getType() != Type.PLAYER){
-            obj.setPosX(obj.getPosX() + posX);
-        }
-    }
-
+    @Override
     public void update() {
-        posX += INCREMENT;
-        for (GameObject obj: gameObjects) {
-            obj.setPosX(obj.getPosX() + INCREMENT);
+        setPosX(getPosX() + INCREMENT);
+
+        for (GameObject obj : gameObjects) {
             obj.update();
         }
     }
 
-    public void doDraw(Canvas canvas) {
-        for (GameObject obj: gameObjects) {
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+
+        for (GameObject obj : gameObjects) {
             obj.draw(canvas);
         }
     }
 
-    public void resize(){
-        for (GameObject obj: gameObjects) {
-            obj.resize();
-        }
+    public int getFinX(){
+        return getPosX() + getSizeX();
     }
 
-    public int getPosX() {
-        return posX;
-    }
-
-    public int getFinX() {
-        return finX;
-    }
-
-    void setPosX (int value){
-        posX = value;
-    }
 }

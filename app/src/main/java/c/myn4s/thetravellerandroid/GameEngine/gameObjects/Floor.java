@@ -14,12 +14,9 @@ public class Floor extends GameObject {
         super(0, SCREEN_HEIGHT-BLOCK_SIZE, resourceInt, BLOCKS_ON_WIDTH,1 ,Type.FLOOR);
     }
 
-    /**
-     * Does nothing, we don't need our floor to move
-     */
     @Override
     public void update() {
-
+        applyMovement();
     }
 
 

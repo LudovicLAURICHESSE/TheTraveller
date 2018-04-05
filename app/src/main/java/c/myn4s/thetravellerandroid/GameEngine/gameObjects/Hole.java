@@ -21,6 +21,6 @@ public class Hole extends GameObject {
 
     @Override
     public void update() {
-
+        applyMovement();
     }
 }

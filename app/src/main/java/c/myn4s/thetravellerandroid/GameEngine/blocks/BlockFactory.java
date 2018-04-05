@@ -1,6 +1,7 @@
 package c.myn4s.thetravellerandroid.GameEngine.blocks;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,42 +16,46 @@ import c.myn4s.thetravellerandroid.R;
 
 public class BlockFactory {
     private Context context;
-    private int width;
-    private int height;
 
     private List<GameObject> gameObjects;
 
+    private Block lastCreated;
+
     public BlockFactory (Context context, int width, int height){
         this.context = context;
-        this.height = height;
-        this.width = width*3;
 
+        lastCreated = null;
         gameObjects = new LinkedList<>();
     }
 
     public Block creationBlock(int blockId){
-        gameObjects.removeAll(gameObjects);
+        if (lastCreated == null)
+            return creationStartBlock();
+
+        Log.i("Myn4s", "Appel blockid "+blockId);
+
+        int startX = lastCreated.getFinX();
+
+        Log.i("Myn4s", "startX "+startX);
+
         switch (blockId){
             case 1:
-                gameObjects.add(new Floor(R.mipmap.brick_tile));
-                return new Block(this.context, gameObjects, width, "b1");
+                lastCreated = new Block(startX, R.mipmap.player);
             case 2:
-                gameObjects.add(new Floor(R.mipmap.brick_tile));
-                return new Block(this.context, gameObjects, width, "b2");
-            case 3:
-                gameObjects.add(new Floor(R.mipmap.brick_tile));
-                return new Block(this.context, gameObjects, width, "b3");
+                lastCreated =  new Block(startX, R.mipmap.foe);
 
             default:
-                gameObjects.add(new Floor(R.mipmap.brick_tile));
-                return new Block(this.context, gameObjects, width, "start");
+                lastCreated =  new Block(startX, R.mipmap.brick_tile);
         }
+
+        Log.i("Myn4s", "Last created position "+ lastCreated.getPosX());
+
+        return lastCreated;
     }
 
-    public Block creationStartBlock() {
-        gameObjects.add(new Floor(R.mipmap.brick_tile));
-        Block b = new Block(this.context, gameObjects, width, "start");
-        b.setPosX(0);
-        return b;
+    private Block creationStartBlock() {
+        Block b = new Block(0, R.mipmap.foe);
+        lastCreated = b;
+        return lastCreated;
     }
 }

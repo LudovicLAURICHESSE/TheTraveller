@@ -1,10 +1,8 @@
 package c.myn4s.thetravellerandroid.AllDisplays;
 
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
 
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.GameObject;
@@ -12,30 +10,36 @@ import c.myn4s.thetravellerandroid.R;
 
 public class PlayActivity extends AppCompatActivity {
 
-    public static DisplayMetrics metrics = new DisplayMetrics();
+    private static int SCREEN_WIDTH;
+    private static int SCREEN_HEIGHT;
+
+    public static int getScreenWidth() {
+        return SCREEN_WIDTH;
+    }
+
+    public static int getScreenHeight() {
+        return SCREEN_HEIGHT;
+    }
+
+    public static void setScreenWidth(int screenWidth) {
+        SCREEN_WIDTH = screenWidth;
+    }
+
+    public static void setScreenHeight(int screenHeight) {
+        SCREEN_HEIGHT = screenHeight;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        setScreenWidth(displayMetrics.widthPixels);
+        setScreenHeight(displayMetrics.heightPixels);
 
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x/100;
-        int height = size.y-500;
-
-        /*
-        Log.i("Myn4s", ""+metrics.widthPixels);
-        Log.i("Myn4s", ""+width);
-
-        Log.i("Myn4s", ""+metrics.heightPixels);
-        Log.i("Myn4s", ""+height);
-        */
-
-        //GameObject.setScreenSize(metrics.widthPixels,metrics.heightPixels); //getting the size of the screen
-        GameObject.setScreenSize(width,height);
+        GameObject.setScreenSize(getScreenWidth(), getScreenHeight());
         setContentView(R.layout.play_display);
     }
 

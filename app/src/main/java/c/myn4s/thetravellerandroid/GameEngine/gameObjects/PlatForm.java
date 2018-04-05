@@ -21,6 +21,6 @@ public class PlatForm extends GameObject {
 
     @Override
     public void update() {
-
+        applyMovement();
     }
 }

@@ -33,9 +33,9 @@ public class Game {
     public Game (BlockFactory blockFactory){
         this.blockFactory = blockFactory;
 
-        prevBlock = this.blockFactory.creationStartBlock();
-        currBlock = prevBlock;
-        nextBlock = this.blockFactory.creationBlock(1);
+        prevBlock = this.blockFactory.creationBlock(0);
+        currBlock = this.blockFactory.creationBlock(1);
+        nextBlock = this.blockFactory.creationBlock(2);
 
         player = new Player(R.mipmap.player);
     }
@@ -46,10 +46,10 @@ public class Game {
         currBlock.update();
         nextBlock.update();
 
-        if (prevBlock.getFinX() == 0){
+        if (prevBlock.getFinX() <= 0){
             prevBlock = currBlock;
             currBlock = nextBlock;
-            nextBlock = blockFactory.creationBlock(0);
+            nextBlock = blockFactory.creationBlock(2);
         }
     }
 
@@ -62,8 +62,12 @@ public class Game {
     }
 
     public void doDraw(Canvas canvas) {
-        prevBlock.doDraw(canvas);
-        currBlock.doDraw(canvas);
+        player.draw(canvas);
+        prevBlock.draw(canvas);
+        currBlock.draw(canvas);
+        nextBlock.draw(canvas);
+
+
     }
 
     public void resize() {

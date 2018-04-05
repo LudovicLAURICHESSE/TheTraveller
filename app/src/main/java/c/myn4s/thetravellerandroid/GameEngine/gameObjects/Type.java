@@ -8,5 +8,6 @@ public enum Type {
     FLOOR,
     PLAYER,
     FOE,
-    PLATFORM
+    PLATFORM,
+    BLOCK
 }

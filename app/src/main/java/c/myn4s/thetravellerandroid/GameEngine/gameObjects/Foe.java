@@ -11,6 +11,7 @@ public class Foe extends GameObject {
 
     @Override
     public void update() {
+        applyMovement();
         applyForce();
     }
 }

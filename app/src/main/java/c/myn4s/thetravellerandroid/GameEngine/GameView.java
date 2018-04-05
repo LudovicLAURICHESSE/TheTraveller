@@ -31,7 +31,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         gameLoopThread = new GameLoopThread(this);
 
-        game = new Game(new BlockFactory(context, PlayActivity.metrics.widthPixels/100, PlayActivity.metrics.heightPixels-500));
+        game = new Game(new BlockFactory(context, PlayActivity.getScreenWidth(), PlayActivity.getScreenHeight()));
     }
 
     /**
@@ -80,6 +80,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int width, int height) {
         GameObject.setScreenSize(width,height);
+        PlayActivity.setScreenHeight(height);
+        PlayActivity.setScreenWidth(width);
         game.resize();
     }
 
@@ -106,9 +108,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         int currentX = (int)event.getX();
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                if(currentX < PlayActivity.metrics.widthPixels/2)
-                game.playerJump();
-                else Log.i("onTouchEvent","Tape beach!!!!!!!!!");
+                if(currentX < PlayActivity.getScreenWidth()/2) {
+                    game.playerJump();
+                    Log.i("Myn4s", "Contact gauche");
+                }
+
+                else {
+                    Log.i("Myn4s", "Contact droite");
+                }
                 break;
         }
 
