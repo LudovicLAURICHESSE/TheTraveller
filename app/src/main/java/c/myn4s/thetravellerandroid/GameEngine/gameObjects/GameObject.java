@@ -6,123 +6,38 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import c.myn4s.thetravellerandroid.GameEngine.Vector;
+import c.myn4s.thetravellerandroid.GameEngine.Grid.Grid;
 
 /**
  * Created by Myn4s on 02/04/2018.
  */
 
 public abstract class GameObject {
-    protected static Context mContext; //the context for the gameObjects, used to access the resources
+    private int posX;
+    private int posY;
+    private int blocksOnX;
+    private int blocksOnY;
+    private int sizeX;
+    private int sizeY;
 
-    protected BitmapDrawable img=null; //the sprite for the object
-    protected int resourceInt; //the int that indicate the sprite in the resources
-    private int posY; //the position on the width of the screen
-    private int posX; //the position on the height of the screen
+    protected BitmapDrawable img=null;
+    protected int resourceInt;
 
-    static protected int BLOCK_SIZE; //the size of a block
-    static protected int BLOCKS_ON_WIDTH = 7; //the number of blocks on the width of the screen
-    static protected int SCREEN_WIDTH;
-    static protected int SCREEN_HEIGHT;
+    protected static Context context;
 
-    protected int blocksY; //the number of blocks in y
-    protected int blocksX; //the number of blocks in x
-    private int sizeY; //the size in pixels in y
-    private int sizeX; //the size in pixels in x
+    public GameObject(int posX, int posY, int nbBlocsX, int nbBlocksOnY){
+        setPosX(posX);
+        setPosY(posY);
+        setBlocksOnX(nbBlocsX);
+        setBlocksOnY(1);
 
-    protected Vector force; //the current force applied to the object
-    private Vector movement; //the movement, applied by the bocks
-    private Type type;
-
-    /**
-     * Constructor for the GameObject
-     * @param startX starting position in x
-     * @param startY starting position in y
-     * @param resourceInt id for the sprite
-     * @param nbBlocksX number of blocks in x
-     * @param nbBlocksY number of blocks in y
-     */
-    public GameObject(int startX, int startY, int resourceInt, int nbBlocksX, int nbBlocksY, Type type){
-        this.resourceInt = resourceInt;
-        setPosX(startX);
-        setPosY(startY);
-        blocksX = nbBlocksX;
-        blocksY = nbBlocksY;
-
-        setSizeX(blocksX * BLOCK_SIZE);
-        setSizeY(blocksY * BLOCK_SIZE);
-
-        force = new Vector(0,0);
-        this.setType(type);
+        setSize();
     }
 
-    public static void setmContext (Context context){
-        mContext = context;
-
+    public static void setContext(Context c){
+        context = c;
     }
 
-    public void draw(Canvas canvas) {
-        if(img==null) {return;}
-        canvas.drawBitmap(img.getBitmap(), getPosX(), getPosY(), null);
-    }
-
-    public void resize() {
-        setSizeX(blocksX * BLOCK_SIZE);
-        setSizeY(blocksY * BLOCK_SIZE);
-
-        img = setImage(mContext, resourceInt, getSizeX(), getSizeY());
-    }
-
-    public static void setScreenSize(int width, int height) {
-        SCREEN_HEIGHT = height;
-        SCREEN_WIDTH = width;
-        BLOCK_SIZE = SCREEN_WIDTH / BLOCKS_ON_WIDTH;
-    }
-
-    private BitmapDrawable setImage(final Context c, final int resource, final int w, final int h)
-    {
-        Drawable dr = c.getResources().getDrawable(resource,null);
-        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-        return new BitmapDrawable(c.getResources(), Bitmap.createScaledBitmap(bitmap, w, h, true));
-    }
-
-    protected void applyForce(){
-        setPosX(getPosX() + force.getX());
-        setPosY(getPosY() + force.getY());
-    }
-
-    protected void applyMovement(){
-        setPosX(getPosX() + getMovement().getX());
-        setPosY(getPosY() + getMovement().getY());
-    }
-    public void nullifyForce(){
-        force = new Vector(0,0);
-    }
-
-    public boolean collision (GameObject obj){
-        return (this.hasInside(obj.getPosX(), obj.getPosY()) ||
-                this.hasInside(obj.getPosX(), obj.getPosY() + obj.getSizeY()) ||
-                this.hasInside(obj.getPosX() + obj.getSizeY(), obj.getPosY()) ||
-                this.hasInside(obj.getPosX() + obj.getSizeX(), obj.getPosY() + obj.getSizeY()));
-    }
-
-    private boolean hasInside (int x, int y){
-        return (this.getPosX() <= x && x <= this.getPosX() + this.getSizeX()) && (this.getPosY() <= y && y <= this.getPosY() + this.getSizeY());
-    }
-
-    abstract public void update();
-
-    public static int getBlockSize(){
-        return BLOCK_SIZE;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
-    }
 
     public int getPosX() {
         return posX;
@@ -132,48 +47,101 @@ public abstract class GameObject {
         this.posX = posX;
     }
 
-    public int getSizeY() {
-        return sizeY;
+    public int getPosY() {
+        return posY;
     }
 
-    protected void setSizeY(int sizeY) {
-        this.sizeY = sizeY;
+    public void setPosY(int posY) {
+        if (posY <= 0) posY = 0;
+        this.posY = posY;
     }
 
     public int getSizeX() {
         return sizeX;
     }
 
-    protected void setSizeX(int sizeX) {
+    public void setSize() {
+        sizeX = getBlocksOnX() * Grid.getBlocksSize();
+        sizeY = getBlocksOnY() * Grid.getBlocksSize();
+    }
+
+    public int getSizeY() {
+        return sizeY;
+    }
+
+
+    protected void setResourceInt(int res){
+        resourceInt = res;
+    }
+
+    public void update() {
+        posX += Grid.getIncrement();
+    }
+
+    public void doDraw(Canvas canvas) {
+        if(img==null) {resize();}
+        if(img!=null) {canvas.drawBitmap(img.getBitmap(), getPosX(), getPosY(), null);}
+    }
+
+    public void  resize() {
+        setSize();
+        img = setImage(context, resourceInt, getSizeX(), getSizeY());
+    }
+
+    public int getBlocksOnX() {
+        return blocksOnX;
+    }
+
+    public void setBlocksOnX(int blocksOnX) {
+        this.blocksOnX = blocksOnX;
+    }
+
+    public int getBlocksOnY() {
+        return blocksOnY;
+    }
+
+    public void setBlocksOnY(int blocksOnY) {
+        this.blocksOnY = blocksOnY;
+    }
+
+    private BitmapDrawable setImage(final Context c, final int resource, final int w, final int h)
+    {
+        Drawable dr = c.getResources().getDrawable(resource,null);
+        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+        return new BitmapDrawable(c.getResources(), Bitmap.createScaledBitmap(bitmap, w, h, true));
+    }
+
+    public void setSizeX(int sizeX) {
         this.sizeX = sizeX;
     }
 
-    public Type getType() {
-        return type;
+    public int getEndX(){
+        return posX + sizeX;
     }
 
-    protected void setType(Type type) {
-        this.type = type;
+    public int getEndY(){
+        return posY + sizeY;
     }
 
-    public void addForce (Vector v){
-        force.add(v);
+    public boolean collisionFromRight (GameObject other){
+        boolean testX = this.getEndX() >= other.getPosX();
+        boolean testY1 = other.getPosY() <= this.getPosY() && this.getPosY() <= other.getEndY();
+        boolean testY2 = other.getPosY() <= this.getEndY() && this.getEndY() <= other.getEndY();
+
+        if (testX && (testY1 || testY2)) {
+            //Log.i("Myn4s", "test collision droite");
+        }
+        return testX && (testY1 || testY2);
     }
 
-    public Vector getForce (){
-        return force;
-    }
+    public boolean collisionFromBottom (GameObject other){
+        boolean testY = this.getEndY() >= other.getPosY();
+        boolean testX1 = other.getPosX() <= this.getPosX() && this.getPosX() <= other.getEndX();
+        boolean testX2 = other.getPosX() <= this.getEndX() && this.getEndX() <= other.getEndX();
 
-    public void setForce(Vector v){
-        force = v;
-    }
-
-
-    public Vector getMovement() {
-        return movement;
-    }
-
-    public void setMovement(Vector movement) {
-        this.movement = movement;
+        if (testY && (testX1 || testX2)) {
+            //Log.i("Myn4s", "test collision bas");
+        }
+        return testY && (testX1 || testX2);
     }
 }

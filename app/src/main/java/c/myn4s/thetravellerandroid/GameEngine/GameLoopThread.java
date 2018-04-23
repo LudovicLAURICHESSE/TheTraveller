@@ -33,7 +33,7 @@ public class GameLoopThread extends Thread {
             //getting the starting time of the iteration
             startTime = System.currentTimeMillis();
 
-            //updating the objects inside the view [NOT IMPLEMENTED YET]
+            //updating the objects inside the view
             synchronized (view.getHolder()) {
                 view.update();
             }

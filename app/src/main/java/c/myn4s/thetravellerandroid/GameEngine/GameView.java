@@ -3,6 +3,8 @@ package c.myn4s.thetravellerandroid.GameEngine;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -11,7 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import c.myn4s.thetravellerandroid.AllDisplays.PlayActivity;
-import c.myn4s.thetravellerandroid.GameEngine.blocks.BlockFactory;
+import c.myn4s.thetravellerandroid.GameEngine.Grid.Grid;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.GameObject;
 
 
@@ -27,11 +29,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super(context, attrs);
         getHolder().addCallback(this);
 
-        GameObject.setmContext(context);
-
         gameLoopThread = new GameLoopThread(this);
 
-        game = new Game(new BlockFactory(context, PlayActivity.getScreenWidth(), PlayActivity.getScreenHeight()));
+        Grid.initialize(PlayActivity.getScreenWidth(), PlayActivity.getScreenHeight());
+
+        game = new Game();
+
+        GameObject.setContext(context);
     }
 
     /**
@@ -41,8 +45,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void doDraw(Canvas canvas){
         if(canvas==null) {return;}
 
-        canvas.drawColor(Color.WHITE); //clearing the canvas
-
+        canvas.drawColor(Color.WHITE);
         game.doDraw(canvas);
     }
 
@@ -79,9 +82,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
      */
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int width, int height) {
-        GameObject.setScreenSize(width,height);
-        PlayActivity.setScreenHeight(height);
-        PlayActivity.setScreenWidth(width);
+        Grid.initialize(width,height);
         game.resize();
     }
 
@@ -106,15 +107,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event){
         int currentX = (int)event.getX();
+        //Log.i("Myn4s", "Contact X " + (int)event.getX() + " Contact Y "  + (int)event.getY());
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 if(currentX < PlayActivity.getScreenWidth()/2) {
                     game.playerJump();
-                    Log.i("Myn4s", "Contact gauche");
                 }
 
                 else {
-                    Log.i("Myn4s", "Contact droite");
+                    //Log.i("Myn4s", "Contact droite");
                 }
                 break;
         }
