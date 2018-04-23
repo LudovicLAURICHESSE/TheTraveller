@@ -13,8 +13,9 @@ import c.myn4s.thetravellerandroid.GameEngine.Grid.Grid;
  */
 
 public abstract class GameObject {
-    private int posX;
-    private int posY;
+    protected int posX;
+    protected int posY;
+
     private int blocksOnX;
     private int blocksOnY;
     private int sizeX;

@@ -20,6 +20,7 @@ public class Game {
     private List<GameObject> gameObjects;
     private Player player;
     private GameObjectGenerator creator;
+    private Score score;
 
     private GameObject plateformeGauche = null;
     private GameObject plateformeDroite = null;
@@ -28,10 +29,13 @@ public class Game {
         creator = new GameObjectGenerator();
         gameObjects = creator.initialize();
         player = new Player(Grid.getBlocksSize(), Grid.getBlocksSize());
+        score = new Score();
     }
 
 
     public void update(){
+        score.winPoint(1);
+
         GameObject nObj = creator.generate();
         if (nObj != null) gameObjects.add(nObj);
 
@@ -100,4 +104,6 @@ public class Game {
         else
             return 0;
     }
+
+    public Score onGameOver(){return score;}
 }

@@ -1,6 +1,8 @@
 package c.myn4s.thetravellerandroid.GameEngine.gameObjects;
 
 
+import android.util.Log;
+
 import c.myn4s.thetravellerandroid.GameEngine.Grid.Grid;
 import c.myn4s.thetravellerandroid.R;
 
@@ -21,25 +23,21 @@ public class Player extends GameObject {
     public Player(int posX, int posY) {
         super(posX, posY, 1, 1);
 
-        posY = Grid.getBlocksSize();
-        posX = Grid.getBlocksSize();
+        this.posY = Grid.getBlocksSize();
+        this.posX = 0;
         resourceInt = R.mipmap.player;
     }
 
     @Override
     public void update(){
-        if (!isGrounded()) //si le joueur ne touche pas le sol
-            movement += gravity;
-        else if (movement > 0) { //si il touche le sol mais qu'il continue de bouger
-            movement = 0;
-            setPosY(getMaxDescente()-this.getSizeY());
+        if (getEndY() + movement < getMaxDescente()){   //si le joueur est passé a travers du sol (ou va passer)
+            setPosY(getMaxDescente() - this.getSizeY());//on le pose au sol
+            movement = 0;                               //on stoppe son mouvement
+            setGrounded(true);                          //on le déclare comme étant au sol
         }
-
-        if (getEndY() + movement > getMaxDescente()) //s'il peu descendre sans passer a travers le sol
-            setPosY(getPosY() + movement);
-        else { //si son déplacement va lui faire traverser le sol
-            setPosY(getMaxDescente() - this.getSizeY());
-            setGrounded(true);
+        else{
+            setPosY(getPosY() + movement); //sinon on le déplace
+            movement += gravity;           //et on incrémente la gravité
         }
     }
 
@@ -66,9 +64,7 @@ public class Player extends GameObject {
 
     @Override
     public void setPosX(int posX){
-//        if (first) {
-//            super.setPosX(posX);
-//            first = false;
-//        }
+
     }
+
 }

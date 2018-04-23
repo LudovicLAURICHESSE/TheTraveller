@@ -122,4 +122,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         return true;
     }
+
+    public Score onGameOver(){
+        return game.onGameOver();
+    }
 }

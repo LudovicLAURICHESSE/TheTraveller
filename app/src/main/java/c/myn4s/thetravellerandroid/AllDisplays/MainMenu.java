@@ -11,6 +11,7 @@ import c.myn4s.thetravellerandroid.R;
 
 public class MainMenu extends AppCompatActivity {
     public static MediaPlayer song;
+    private static final int PLAY_A_GAME_REQUEST = 145;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class MainMenu extends AppCompatActivity {
 
     public void playGame(View view) {
         Intent intent = new Intent(MainMenu.this,PlayActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, PLAY_A_GAME_REQUEST); //permet de récupérer le score à la fin de la partie
     }
 
     public void showScores(View view) {
