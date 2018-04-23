@@ -64,17 +64,25 @@ public class GameObjectGenerator {
     }
 
     private int randomLevel(){
-        if (first){
+        int newLevel = 1;
+        if (first){ //le premier est toujours 1
             first = false;
-            return 1;
         }
-        if (Grid.getBlocksOnHeight() > lastUsedLevel+2)
-            return rand.nextInt(lastUsedLevel +1)+1;
-        else
-            return rand.nextInt(Grid.getBlocksOnHeight())+1;
+        else {
+            if (Grid.getBlocksOnHeight() > lastUsedLevel + 2){
+                newLevel = rand.nextInt(lastUsedLevel + 1) + 1;
+                if (newLevel == lastUsedLevel) newLevel ++;
+            }
+
+            else { //le dernier level était le plus haut possible
+                newLevel = rand.nextInt(Grid.getBlocksOnHeight()) + 1;
+                if (newLevel == lastUsedLevel) newLevel --;
+            }
+        }
+        return newLevel;
     }
 
     private int randomSize(){
-        return rand.nextInt(8) +3;
-    }
+        return rand.nextInt(5) +3;
+    } //génere une taille comprise entre 3 et 8 blocks
 }

@@ -13,26 +13,28 @@ import c.myn4s.thetravellerandroid.GameEngine.Grid.Grid;
  */
 
 public abstract class GameObject {
+    //position
     protected int posX;
     protected int posY;
-
+    //nombre de blocks occupés
     private int blocksOnX;
     private int blocksOnY;
+    //taille (en pixels)
     private int sizeX;
     private int sizeY;
-
+    //sprite
     protected BitmapDrawable img=null;
     protected int resourceInt;
-
+    //contexte (pour les sprites)
     protected static Context context;
 
     public GameObject(int posX, int posY, int nbBlocsX, int nbBlocksOnY){
         setPosX(posX);
         setPosY(posY);
         setBlocksOnX(nbBlocsX);
-        setBlocksOnY(1);
+        setBlocksOnY(1); //la hauteur d'un objet n'a pas besoin de dépasser un block
 
-        setSize();
+        setSize(); //définition des tailles à l'écran
     }
 
     public static void setContext(Context c){
@@ -53,7 +55,7 @@ public abstract class GameObject {
     }
 
     public void setPosY(int posY) {
-        if (posY <= 0) posY = 0;
+        if (posY <= 0) posY = 0; //vérification pour ne pas dépasser le plafond
         this.posY = posY;
     }
 
@@ -61,7 +63,7 @@ public abstract class GameObject {
         return sizeX;
     }
 
-    public void setSize() {
+    public void setSize() { //défini les tailles en pixels en fonction de la taille d'un block
         sizeX = getBlocksOnX() * Grid.getBlocksSize();
         sizeY = getBlocksOnY() * Grid.getBlocksSize();
     }
@@ -70,17 +72,16 @@ public abstract class GameObject {
         return sizeY;
     }
 
-
     protected void setResourceInt(int res){
         resourceInt = res;
     }
 
     public void update() {
         posX += Grid.getIncrement();
-    }
+    } //mouvement des objets (changé juste pour le joueur)
 
     public void doDraw(Canvas canvas) {
-        if(img==null) {resize();}
+        if(img==null) {resize();} //
         if(img!=null) {canvas.drawBitmap(img.getBitmap(), getPosX(), getPosY(), null);}
     }
 

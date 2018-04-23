@@ -13,7 +13,7 @@ import c.myn4s.thetravellerandroid.R;
 public class Player extends GameObject {
     private boolean first = true;
     private int movement = 0;
-    private int jumpForce = -70;
+    private int jumpForce = -75;
     private int gravity = 5;
 
     private boolean grounded = true;
@@ -65,6 +65,18 @@ public class Player extends GameObject {
     @Override
     public void setPosX(int posX){
 
+    }
+
+    public boolean isKilledBy(GameObject other){
+        if (movement <= 0 && !(this.getPosX() >= other.getEndX())) { //élimination du cas ou le joueur est tu& par une plateforme qui est passée derrière lui
+            if (this.getEndX() >= other.getPosX()) {     //contact à droite
+                if (this.getEndY() > other.getPosY()) {  //
+                    Log.i("Myn4s", "Player is dead");
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

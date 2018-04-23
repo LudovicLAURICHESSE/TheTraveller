@@ -16,6 +16,7 @@ import java.util.List;
  */
 
 public class Game {
+    private boolean doUpdate = true;
 
     private List<GameObject> gameObjects;
     private Player player;
@@ -34,38 +35,47 @@ public class Game {
 
 
     public void update(){
-        score.winPoint(1);
+        if (doUpdate) {
+            score.winPoint(1);
 
-        GameObject nObj = creator.generate();
-        if (nObj != null) gameObjects.add(nObj);
+            GameObject nObj = creator.generate();
+            if (nObj != null) gameObjects.add(nObj);
 
-        for (GameObject obj: gameObjects) {
-            if (player.collisionFromRight(obj)) {}
-            //game over
+            for (GameObject obj : gameObjects) {
+                if (player.collisionFromRight(obj)) {
+                }
+                //game over
 
-            if (!player.isGrounded() && player.collisionFromBottom(obj)){
-                player.setGrounded(true);
-                player.setPosX(obj.getPosX() + Grid.getBlocksSize());
+                if (!player.isGrounded() && player.collisionFromBottom(obj)) {
+                    player.setGrounded(true);
+                    player.setPosX(obj.getPosX() + Grid.getBlocksSize());
+                }
             }
+
+            if (gameObjects.get(0).getEndX() < Grid.getDestructionPoint())
+                gameObjects.remove(0);
+
+            for (GameObject obj : gameObjects) {
+                obj.update();
+
+                if (player.isKilledBy(obj))
+                    doUpdate = false; //en cas de mort, on arrete d'update
+            }
+
+            for (int i = 0; i < 3 && i < gameObjects.size(); i++) {
+                //si parmis les 3 premiers objets de la liste
+                //on trouve un objet dont les bornes en Y entourent posY du joueur
+                if (gameObjects.get(i).getPosX() <= player.getPosX() &&  player.getPosX() <= gameObjects.get(i).getEndX())
+                    plateformeGauche = gameObjects.get(i); //cet objet est la plateforme de gauche
+
+                //idem autour de endX pour trouver la plateforme de droite
+                if (gameObjects.get(i).getPosX() <= player.getEndX() && player.getEndX() <= gameObjects.get(i).getEndX())
+                    plateformeDroite = gameObjects.get(i);
+            }
+
+            player.setMaxDescente(this.getMaxDescente());
+            player.update();
         }
-
-        if (gameObjects.get(0).getEndX() < Grid.getDestructionPoint())
-            gameObjects.remove(0);
-
-        for (GameObject obj: gameObjects) {
-            obj.update();
-        }
-
-        for (int i = 0 ; i < 3 && i < gameObjects.size() ; i++){
-            if (gameObjects.get(i).getPosX() <= player.getPosX() && gameObjects.get(i).getEndX() >= player.getPosX())
-                plateformeGauche = gameObjects.get(i);
-
-            if (gameObjects.get(i).getEndX() <= player.getPosX() && gameObjects.get(i).getEndX() >= player.getEndX())
-                plateformeDroite = gameObjects.get(i);
-        }
-
-        player.setMaxDescente(this.getMaxDescente());
-        player.update();
     }
 
 
