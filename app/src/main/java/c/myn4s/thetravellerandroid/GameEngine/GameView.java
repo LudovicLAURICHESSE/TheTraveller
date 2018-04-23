@@ -100,7 +100,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 gameLoopThread.join(); //we try to stop the running thread
                 retry = false;
             }
-            catch (InterruptedException e) {}
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

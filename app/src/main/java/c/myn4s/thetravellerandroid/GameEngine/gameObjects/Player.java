@@ -13,7 +13,7 @@ import c.myn4s.thetravellerandroid.R;
 public class Player extends GameObject {
     private boolean first = true;
     private int movement = 0;
-    private int jumpForce = -30;
+    private int jumpForce = -70;
     private int gravity = 5;
 
     private boolean grounded = true;
@@ -24,13 +24,13 @@ public class Player extends GameObject {
         super(posX, posY, 1, 1);
 
         this.posY = Grid.getBlocksSize();
-        this.posX = 0;
+        this.posX = Grid.getBlocksSize();
         resourceInt = R.mipmap.player;
     }
 
     @Override
     public void update(){
-        if (getEndY() + movement < getMaxDescente()){   //si le joueur est passé a travers du sol (ou va passer)
+        if (getEndY() + movement > getMaxDescente()){   //si le joueur est passé a travers du sol (ou va passer)
             setPosY(getMaxDescente() - this.getSizeY());//on le pose au sol
             movement = 0;                               //on stoppe son mouvement
             setGrounded(true);                          //on le déclare comme étant au sol
