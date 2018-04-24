@@ -30,10 +30,18 @@
 
     </LinearLayout>
 
-    <view
-        android:id="@+id/gameview"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class = "c.myn4s.thetravellerandroid.GameEngine.GameView" />
+        android:id="@+id/fragment_container">
+
+        <view
+            android:id="@+id/gameview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class = "c.myn4s.thetravellerandroid.GameEngine.GameView" />
+
+    </FrameLayout>
+
 
 </LinearLayout>

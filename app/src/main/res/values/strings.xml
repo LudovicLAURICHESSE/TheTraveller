@@ -22,5 +22,8 @@
     </string-array>
 
     <string name="game_over" translatable="false">Game Over!</string>
+    <string name="score_result">Your score</string>
+    <string name="high_score">High score</string>
+    <string name="menu">Menu</string>
 
 </resources>

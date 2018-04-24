@@ -11,4 +11,7 @@
     <string name="World">Monde</string>
     <string name="Character">Personnage</string>
     <string name="Back">Retour</string>
+    <string name="score_result">Ton score</string>
+    <string name="high_score">Meilleur score</string>
+    <string name="menu">Menu</string>
 </resources>
