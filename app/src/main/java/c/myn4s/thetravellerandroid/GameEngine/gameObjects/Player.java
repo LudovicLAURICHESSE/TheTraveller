@@ -30,7 +30,8 @@ public class Player extends GameObject {
 
     @Override
     public void update(){
-        if (getEndY() + movement > getMaxDescente()){   //si le joueur est passé a travers du sol (ou va passer)
+        //si le joueur est passé a travers du sol (ou va passer) + vérification qu'il n'est pas tombé précédement
+        if ((getPosY() < getMaxDescente())&&(getEndY() + movement > getMaxDescente())){
             setPosY(getMaxDescente() - this.getSizeY());//on le pose au sol
             movement = 0;                               //on stoppe son mouvement
             setGrounded(true);                          //on le déclare comme étant au sol
@@ -68,7 +69,7 @@ public class Player extends GameObject {
     }
 
     public boolean isKilledBy(GameObject other){
-        if (movement <= 0 && !(this.getPosX() >= other.getEndX())) { //élimination du cas ou le joueur est tu& par une plateforme qui est passée derrière lui
+        if (movement <= 0 && !(this.getPosX() >= other.getEndX())) { //élimination du cas ou le joueur est tué par une plateforme qui est passée derrière lui
             if (this.getEndX() >= other.getPosX()) {     //contact à droite
                 if (this.getEndY() > other.getPosY()) {  //
                     Log.i("Myn4s", "Player is dead");

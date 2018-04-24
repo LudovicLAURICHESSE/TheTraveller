@@ -6,6 +6,7 @@ import c.myn4s.thetravellerandroid.GameEngine.Grid.GameObjectGenerator;
 import c.myn4s.thetravellerandroid.GameEngine.Grid.Grid;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.GameObject;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.Player;
+import c.myn4s.thetravellerandroid.GameEngine.gameObjects.PlayerIsDeadException;
 
 import android.graphics.Canvas;
 import android.util.Log;
@@ -34,7 +35,7 @@ public class Game {
     }
 
 
-    public void update(){
+    public void update() throws PlayerIsDeadException {
         if (doUpdate) {
             score.winPoint(1);
 
@@ -42,9 +43,6 @@ public class Game {
             if (nObj != null) gameObjects.add(nObj);
 
             for (GameObject obj : gameObjects) {
-                if (player.collisionFromRight(obj)) {
-                }
-                //game over
 
                 if (!player.isGrounded() && player.collisionFromBottom(obj)) {
                     player.setGrounded(true);
@@ -58,8 +56,10 @@ public class Game {
             for (GameObject obj : gameObjects) {
                 obj.update();
 
-                if (player.isKilledBy(obj))
-                    doUpdate = false; //en cas de mort, on arrete d'update
+//                if (player.isKilledBy(obj)) {
+//                    doUpdate = false; //en cas de mort, on arrete d'update
+//                    throw new PlayerIsDeadException();
+//                }
             }
 
             for (int i = 0; i < 3 && i < gameObjects.size(); i++) {
@@ -71,6 +71,11 @@ public class Game {
                 //idem autour de endX pour trouver la plateforme de droite
                 if (gameObjects.get(i).getPosX() <= player.getEndX() && player.getEndX() <= gameObjects.get(i).getEndX())
                     plateformeDroite = gameObjects.get(i);
+            }
+
+            //vérification si le joueur n'est pas tué par une plateforme ou tombé
+            if (player.isKilledBy(plateformeDroite) || player.getPosY() > Grid.getScreenHeight()){
+                doUpdate = false;
             }
 
             player.setMaxDescente(this.getMaxDescente());
@@ -103,10 +108,7 @@ public class Game {
     private int getMaxDescente(){
         if (plateformeGauche != null){
             if (plateformeDroite != null){
-                if (plateformeGauche.getPosY() > plateformeGauche.getPosY())
-                    return plateformeDroite.getPosY();
-                else
-                    return plateformeGauche.getPosY();
+                return Math.min(plateformeGauche.getPosY() , plateformeDroite.getPosY());
             }
             else
                 return plateformeGauche.getPosY();

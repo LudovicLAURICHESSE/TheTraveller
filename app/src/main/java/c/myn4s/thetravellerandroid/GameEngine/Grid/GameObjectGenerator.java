@@ -21,7 +21,7 @@ public class GameObjectGenerator {
     }
 
     public GameObject generate(){
-        if (lastGeneratedPlatform != null && lastGeneratedPlatform.getEndX() > Grid.getGenerationPoint() + Grid.getBlocksSize()/2 ){
+        if (lastGeneratedPlatform != null && lastGeneratedPlatform.getEndX() > Grid.getGenerationPoint() ){
             return null;
         }
         else{

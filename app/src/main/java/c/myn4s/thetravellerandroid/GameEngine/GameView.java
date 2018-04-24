@@ -1,5 +1,6 @@
 package c.myn4s.thetravellerandroid.GameEngine;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,9 +13,11 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import c.myn4s.thetravellerandroid.AllDisplays.GameOverDialog;
 import c.myn4s.thetravellerandroid.AllDisplays.PlayActivity;
 import c.myn4s.thetravellerandroid.GameEngine.Grid.Grid;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.GameObject;
+import c.myn4s.thetravellerandroid.GameEngine.gameObjects.PlayerIsDeadException;
 
 
 /**
@@ -52,8 +55,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     /**
      * method that applies an update on all the gameobjects
      */
-    public void update(){
-        game.update();
+    public void update() {
+        try {
+            game.update();
+        } catch (PlayerIsDeadException e) {
+            e.printStackTrace();
+
+        }
     }
 
     /**

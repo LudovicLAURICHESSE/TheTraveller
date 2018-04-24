@@ -17,9 +17,6 @@ public abstract class Grid {
     private static int GENERATION_POINT;
     private static int DESTRUCTION_POINT = 0;
 
-    private static int FLOOR_LEVEL;
-    private static int ROOF_LEVEL;
-
     private static int INCREMENT = -10;
 
     public static void initialize(int screenWidth, int screenHeight){
@@ -59,14 +56,6 @@ public abstract class Grid {
 
     public static int getDestructionPoint() {
         return DESTRUCTION_POINT;
-    }
-
-    public static int getFloorLevel() {
-        return FLOOR_LEVEL;
-    }
-
-    public static int getRoofLevel() {
-        return ROOF_LEVEL;
     }
 
     public static int getIncrement() {

@@ -2,6 +2,8 @@ package c.myn4s.thetravellerandroid.GameEngine;
 
 import android.graphics.Canvas;
 
+import c.myn4s.thetravellerandroid.GameEngine.gameObjects.PlayerIsDeadException;
+
 /**
  * Created by Myn4s on 02/04/2018.
  */
