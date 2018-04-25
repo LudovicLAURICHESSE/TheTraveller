@@ -3,6 +3,8 @@ package c.myn4s.thetravellerandroid.GameEngine;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,15 +43,29 @@ public class Score implements Serializable{
     }
 
     public  void malusPoint(int penalite) {
+        int oldValue = point;
         point-=penalite;
+        propertyChangeSupport.firePropertyChange("point", oldValue, point);
     }
 
     public  void winPoint(int pointWin) {
+        int oldValue = point;
         point+=pointWin;
+        propertyChangeSupport.firePropertyChange("point", oldValue, point);
     }
 
     public  void addScore(double d) {
+        int oldValue = point;
         point+= d*FACTEUR_POINT;
+        propertyChangeSupport.firePropertyChange("point", oldValue, point);
+    }
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
 }

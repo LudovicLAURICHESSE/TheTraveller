@@ -8,8 +8,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import c.myn4s.thetravellerandroid.GameEngine.GameView;
 import c.myn4s.thetravellerandroid.GameEngine.Score;
@@ -27,6 +32,9 @@ public class PlayActivity extends AppCompatActivity {
         return metrics.heightPixels;
     }
 
+    private Score score;
+    private TextView scoreDisplayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +42,30 @@ public class PlayActivity extends AppCompatActivity {
 
         WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(metrics);
-
         setContentView(R.layout.play_display);
+        scoreDisplayer = findViewById(R.id.textViewScore);
+        scoreDisplayer.setText("" + 0);
+        score = ((GameView) findViewById(R.id.gameview)).onGameOver();
+        score.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent pce) {
+                update((int) pce.getNewValue());
+            }
+        });
+
+
+    }
+    private void update(final int points){
+
+        runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+            scoreDisplayer.setText("" + points);
+        }});
     }
 
     public void back(View view) {
         Intent data = new Intent();
-        Score score = ((GameView)findViewById(R.id.gameview)).onGameOver();
+        score = ((GameView)findViewById(R.id.gameview)).onGameOver();
         data.putExtra("score", score);
         setResult(Activity.RESULT_OK,data);
         PlayActivity.this.finish();
