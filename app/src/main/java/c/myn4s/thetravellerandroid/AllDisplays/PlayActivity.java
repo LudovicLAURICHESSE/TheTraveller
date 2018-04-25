@@ -1,5 +1,6 @@
 package c.myn4s.thetravellerandroid.AllDisplays;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -12,7 +13,6 @@ import android.view.WindowManager;
 
 import c.myn4s.thetravellerandroid.GameEngine.GameView;
 import c.myn4s.thetravellerandroid.GameEngine.Score;
-import c.myn4s.thetravellerandroid.GameEngine.gameObjects.GameObject;
 import c.myn4s.thetravellerandroid.R;
 
 public class PlayActivity extends AppCompatActivity {
@@ -39,15 +39,11 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void back(View view) {
-
-        PlayActivity.this.finish();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        Intent data = new Intent();
         Score score = ((GameView)findViewById(R.id.gameview)).onGameOver();
         data.putExtra("score", score);
+        setResult(Activity.RESULT_OK,data);
+        PlayActivity.this.finish();
     }
 
     public void endGame(){
@@ -57,4 +53,5 @@ public class PlayActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.fragment_container, end);
         fragmentTransaction.commit();
     }
+
 }
