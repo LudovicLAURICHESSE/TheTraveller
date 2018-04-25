@@ -17,7 +17,7 @@ public abstract class Grid {
     private static int GENERATION_POINT;
     private static int DESTRUCTION_POINT = 0;
 
-    private static int INCREMENT = -10;
+    private static int INCREMENT = -20;
 
     public static void initialize(int screenWidth, int screenHeight){
         SCREEN_WIDTH = screenWidth;

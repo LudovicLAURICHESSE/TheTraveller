@@ -4,14 +4,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import c.myn4s.thetravellerandroid.GameEngine.gameObjects.Foe;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.GameObject;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.PlatForm;
 
 public class GameObjectGenerator {
-    private GameObject lastGeneratedPlatform;
-    private int lastUsedLevel;
-    private Random rand;
-    private boolean first = true;
+    private GameObject lastGeneratedPlatform;   //référence sur la dernière plateforme générée
+    private int lastUsedLevel;                  //niveau de la dernière plateforme générée
+    private Random rand;                        //générateur de nombre aléatoires
+    private boolean first = true;               //premier appel ou non
+
+    private int timer = 0;
 
     public GameObjectGenerator (){
         lastGeneratedPlatform = null;
@@ -21,21 +24,35 @@ public class GameObjectGenerator {
     }
 
     public GameObject generate(){
+        //on ne peut pas générer si la dernière plateforme des nulle
+        //il est inutile de générer si la dernière plateforme n'a pas quittée la zone de génération
         if (lastGeneratedPlatform != null && lastGeneratedPlatform.getEndX() > Grid.getGenerationPoint() ){
             return null;
         }
         else{
-            int x = Grid.getGenerationPoint();
-            int level = randomLevel();
+            int x = Grid.getGenerationPoint();  //le point de génération
+            int level = randomLevel();          //nouveau niveau de génération
 
-            int y = (Grid.getBlocksOnHeight() - level) * Grid.getBlocksSize();
+            int y = (Grid.getBlocksOnHeight() - level) * Grid.getBlocksSize(); //traduction du niveau en valeur en pixels
 
-            int size = randomSize();
+            int size = randomSize(); //la longueur de la plateforme générée
 
-            lastGeneratedPlatform = new PlatForm(x,y,size,1);
-            lastUsedLevel = level;
+            lastGeneratedPlatform = new PlatForm(x,y,size,1); //création de la nouvelle plateforme
+            lastUsedLevel = level;  //mise en mémoire du niveau utilisé
 
             return lastGeneratedPlatform;
+        }
+    }
+
+    public Foe generateFoe(){
+        timer ++;
+        if (timer % 100 == 0){
+            int nPosX = lastGeneratedPlatform.getPosX() + ((lastGeneratedPlatform.getEndX() - lastGeneratedPlatform.getPosX())/2);
+            int nPosY = lastGeneratedPlatform.getPosY() - Grid.getBlocksSize(); //on le pose sur la plateforme
+            return new Foe(nPosX,nPosY);
+        }
+        else {
+            return null;
         }
     }
 
@@ -45,8 +62,8 @@ public class GameObjectGenerator {
         int x = 0;
         int level, y, size;
 
+        //boucle qui rempli la liste a retourner jusqu'a atteindre le point de génération
         while (gameObjects.isEmpty() || gameObjects.getLast().getEndX() < Grid.getGenerationPoint()){
-
             level = randomLevel();
             y = (Grid.getBlocksOnHeight() - level) * Grid.getBlocksSize();
             size = randomSize();
@@ -59,8 +76,8 @@ public class GameObjectGenerator {
         }
 
 
-        lastGeneratedPlatform = gameObjects.getLast();
-        return gameObjects;
+        lastGeneratedPlatform = gameObjects.getLast(); //mise en mémoire de la dernière plateforme créée
+        return gameObjects; //retour de la liste
     }
 
     private int randomLevel(){

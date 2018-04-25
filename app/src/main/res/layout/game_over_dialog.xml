@@ -27,7 +27,8 @@
         <TextView
             android:id="@+id/textViewScore"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@={Game.score.point}"/>
     </TableRow>
 
     <TableRow

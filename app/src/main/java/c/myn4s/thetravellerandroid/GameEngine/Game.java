@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 
 import c.myn4s.thetravellerandroid.GameEngine.Grid.GameObjectGenerator;
 import c.myn4s.thetravellerandroid.GameEngine.Grid.Grid;
+import c.myn4s.thetravellerandroid.GameEngine.gameObjects.Foe;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.GameObject;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.Player;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.PlayerIsDeadException;
@@ -11,6 +12,7 @@ import c.myn4s.thetravellerandroid.GameEngine.gameObjects.PlayerIsDeadException;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import java.util.LinkedList;
 import java.util.List;
 /**
  * Created by Myn4s on 03/04/2018.
@@ -24,16 +26,18 @@ public class Game {
     private GameObjectGenerator creator;
     private Score score;
 
+    private List<Foe> foes;
+
     private GameObject plateformeGauche = null;
     private GameObject plateformeDroite = null;
 
     public Game (){
         creator = new GameObjectGenerator(); //création de la fabrique de plateformes
         gameObjects = creator.initialize(); //remplissage de la liste de platefomes
+        foes = new LinkedList<>();
         player = new Player(Grid.getBlocksSize(), Grid.getBlocksSize()); //instanciation du joueur
         score = new Score(); //initialisation du score
     }
-
 
     public void update() throws PlayerIsDeadException {
         if (doUpdate) { //si le jeu continue
@@ -41,6 +45,10 @@ public class Game {
 
             GameObject nObj = creator.generate(); //appel de la fabrique (renvoie null si il n'y a pas besoin de générer de plateforme
             if (nObj != null) gameObjects.add(nObj);
+
+            Foe nFoe = creator.generateFoe();
+            if (nFoe != null) foes.add(nFoe);
+
 
             if (gameObjects.get(0).getEndX() < Grid.getDestructionPoint()) //suppression des plateformes sorties de l'écran
                 gameObjects.remove(0);
@@ -67,6 +75,10 @@ public class Game {
 
             player.setMaxDescente(this.getMaxDescente()); //mise a jour de la limite de chute du joueur
             player.update(); //mise a jour du joueur
+
+            for (Foe f: foes) {
+                f.update();
+            }
         }
     }
 
@@ -77,6 +89,11 @@ public class Game {
         }
 
         player.doDraw(canvas);
+
+        for (Foe obj: foes) {
+            obj.doDraw(canvas);
+        }
+
     }
 
     public void resize() { //mise a jour des tailles

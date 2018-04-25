@@ -13,7 +13,7 @@ import c.myn4s.thetravellerandroid.R;
 public class Player extends GameObject {
     private boolean first = true;
     private int movement = 0;
-    private int jumpForce = -75;
+    private int jumpForce = -50;
     private int gravity = 5;
 
     private boolean grounded = true;
