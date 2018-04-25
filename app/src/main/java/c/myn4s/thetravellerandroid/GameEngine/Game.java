@@ -28,38 +28,25 @@ public class Game {
     private GameObject plateformeDroite = null;
 
     public Game (){
-        creator = new GameObjectGenerator();
-        gameObjects = creator.initialize();
-        player = new Player(Grid.getBlocksSize(), Grid.getBlocksSize());
-        score = new Score();
+        creator = new GameObjectGenerator(); //création de la fabrique de plateformes
+        gameObjects = creator.initialize(); //remplissage de la liste de platefomes
+        player = new Player(Grid.getBlocksSize(), Grid.getBlocksSize()); //instanciation du joueur
+        score = new Score(); //initialisation du score
     }
 
 
     public void update() throws PlayerIsDeadException {
-        if (doUpdate) {
-            score.winPoint(1);
+        if (doUpdate) { //si le jeu continue
+            score.winPoint(1); //incrémentation du score
 
-            GameObject nObj = creator.generate();
+            GameObject nObj = creator.generate(); //appel de la fabrique (renvoie null si il n'y a pas besoin de générer de plateforme
             if (nObj != null) gameObjects.add(nObj);
 
-            for (GameObject obj : gameObjects) {
-
-                if (!player.isGrounded() && player.collisionFromBottom(obj)) {
-                    player.setGrounded(true);
-                    player.setPosX(obj.getPosX() + Grid.getBlocksSize());
-                }
-            }
-
-            if (gameObjects.get(0).getEndX() < Grid.getDestructionPoint())
+            if (gameObjects.get(0).getEndX() < Grid.getDestructionPoint()) //suppression des plateformes sorties de l'écran
                 gameObjects.remove(0);
 
-            for (GameObject obj : gameObjects) {
+            for (GameObject obj : gameObjects) { //déplacement des plateformes
                 obj.update();
-
-//                if (player.isKilledBy(obj)) {
-//                    doUpdate = false; //en cas de mort, on arrete d'update
-//                    throw new PlayerIsDeadException();
-//                }
             }
 
             for (int i = 0; i < 3 && i < gameObjects.size(); i++) {
@@ -78,13 +65,13 @@ public class Game {
                 doUpdate = false;
             }
 
-            player.setMaxDescente(this.getMaxDescente());
-            player.update();
+            player.setMaxDescente(this.getMaxDescente()); //mise a jour de la limite de chute du joueur
+            player.update(); //mise a jour du joueur
         }
     }
 
 
-    public void doDraw(Canvas canvas) {
+    public void doDraw(Canvas canvas) { //dessiner le canvas avec tous ses éléments
         for (GameObject obj: gameObjects) {
             obj.doDraw(canvas);
         }
@@ -92,7 +79,7 @@ public class Game {
         player.doDraw(canvas);
     }
 
-    public void resize() {
+    public void resize() { //mise a jour des tailles
         for (GameObject obj: gameObjects) {
             obj.resize();
         }
@@ -101,21 +88,23 @@ public class Game {
     }
 
     public void playerJump(){
-        if (player.isGrounded())
+        if (player.isGrounded()) //le joueur ne peut sauter que si il est au sol
             player.jump();
     }
 
-    private int getMaxDescente(){
+    private int getMaxDescente(){ //obtenir le sol le plus proche du joueur
         if (plateformeGauche != null){
             if (plateformeDroite != null){
+                //minimum car les valeurs en y sont inversées par rapport à la logique humaine
+                //minimum entre le dessus de la plateforme située sous la droite et celle située sous la gauche du joueur
                 return Math.min(plateformeGauche.getPosY() , plateformeDroite.getPosY());
             }
             else
                 return plateformeGauche.getPosY();
         }
         else
-            return 0;
+            return 0; //cas jamais atteint (sauf bug)
     }
 
-    public Score onGameOver(){return score;}
+    public Score onGameOver(){return score;} //renvoyer le score
 }
