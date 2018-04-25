@@ -1,5 +1,8 @@
 package c.myn4s.thetravellerandroid.GameEngine;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,7 +11,7 @@ import java.util.Date;
  * Created by ludod on 31/03/2018.
  */
 
-public class Score implements Serializable {
+public class Score implements Serializable{
 
     private  int point;
     private transient final double FACTEUR_POINT=10;
@@ -24,6 +27,7 @@ public class Score implements Serializable {
         this.date = date;
         this.point = score;
     }
+
     public void setDate(String date) {
         this.date = date;
     }
@@ -47,4 +51,5 @@ public class Score implements Serializable {
     public  void addScore(double d) {
         point+= d*FACTEUR_POINT;
     }
+
 }

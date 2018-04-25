@@ -9,20 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.Integer.parseInt;
-
-import android.content.Context;
-import android.util.Log;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,15 +19,21 @@ import static java.lang.Integer.parseInt;
  * Created by ludod on 07/04/2018.
  */
 
-public class TableScore{
+public class TableScore implements Serializable {
 
-    private static List<Score> tableScore;
-    private transient static Context appcontext;
+    private  List<Score> tableScore;
+    private transient Context appcontext;
 
     public TableScore(Context context){
         tableScore = new ArrayList<>(10);
         appcontext=context;
     }
+    public TableScore(Context context,List<Score>table){
+        tableScore = table;
+        appcontext=context;
+    }
+
+
     public List<Score> getTableScore() {
         return tableScore;
     }
@@ -57,9 +50,9 @@ public class TableScore{
         try (
                 BufferedWriter scoreWritter = new BufferedWriter(new FileWriter(appcontext.getExternalFilesDir(null)+"/allscore.txt",false));)
         {
-
-            for(int i=0;i<tableScore.size();i++){
-                scoreWritter.write(tableScore.get(i).getDate()+"\n"+tableScore.get(i).getPoint()+"\n");
+            for (int i = 0; i < tableScore.size(); i++) {
+                if (i > 10) break;
+                scoreWritter.write(tableScore.get(i).getDate() + "\n" + tableScore.get(i).getPoint() + "\n");
             }
         }
         catch (IOException e) {

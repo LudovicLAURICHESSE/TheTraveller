@@ -11,7 +11,11 @@
     <string name="World">Monde</string>
     <string name="Character">Personnage</string>
     <string name="Back">Retour</string>
+    <string name="DateHeader">DATE DU SCORE :</string>
+    <string name="ScoreHeader">NOMBRE DE POINTS :</string>
+    <string name="ReinitializeScores">Réinitialiser vos scores</string>
     <string name="score_result">Ton score</string>
     <string name="high_score">Meilleur score</string>
     <string name="menu">Menu</string>
+
 </resources>
