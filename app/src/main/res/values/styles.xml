@@ -18,5 +18,9 @@
         <item name="android:textSize">@dimen/GameButton</item>
         <item name="android:background">@color/transparent</item>
     </style>
+    <style name="ScoreDisplayer" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">@dimen/textScoreStyle</item>
+    </style>
 
 </resources>

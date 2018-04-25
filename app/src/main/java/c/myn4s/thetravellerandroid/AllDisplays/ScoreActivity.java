@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,13 +20,14 @@ import c.myn4s.thetravellerandroid.R;
 
 public class ScoreActivity extends AppCompatActivity {
 
-    TableScore tableScore;
-    List<Score> leaderBoard;
+    private TableScore tableScore;
+    private List<Score> leaderBoard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scores_display);
+
         Intent intent = getIntent();
         if(intent != null){
             tableScore= (TableScore)intent.getSerializableExtra("tableScore");
@@ -35,6 +37,7 @@ public class ScoreActivity extends AppCompatActivity {
         TableRow row;
         TextView date,points;
         for(int i=0;i<10;i++){
+            if(i>=leaderBoard.size())break;
             row = new TableRow(getApplicationContext());
             date = new TextView(getApplicationContext());
             points = new TextView(getApplicationContext());
@@ -48,12 +51,28 @@ public class ScoreActivity extends AppCompatActivity {
             row.addView(points);
             scoreTableLayout.addView(row);
         }
+        Button rebootLeaderBoard = findViewById(R.id.rebootLeaderBoard);
+        /*rebootLeaderBoard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reinitialize(view);
+                setTableLayout(leaderBoard);
+            }
+        });*/
+
+
     }
     public void back(View view) {
         ScoreActivity.this.finish();
     }
 
+    private void setTableLayout(List<Score> leaderBoard){
 
-    public void reinitialize(View view) {
     }
+
+    /*private void reinitialize(View view) {
+        tableScore.deleteFileScore();
+        tableScore.chargeScore();
+        leaderBoard=tableScore.getTableScore();
+    }*/
 }

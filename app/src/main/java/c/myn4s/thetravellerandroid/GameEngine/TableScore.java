@@ -45,6 +45,7 @@ public class TableScore implements Serializable {
                 break;
             }
         }
+
         File f = new File(appcontext.getExternalFilesDir(null)+"/allscore.txt");
         f.delete();
         try (
@@ -83,4 +84,9 @@ public class TableScore implements Serializable {
             tableScore.add(new Score("-",0));
         }
     }
+    /*public void deleteFileScore(){
+        File f = new File(appcontext.getExternalFilesDir(null)+"/allscore.txt");
+        f.delete();
+    }*/
+
 }

@@ -2,4 +2,5 @@
 <resources>
     <dimen name="textSize">40dp</dimen>
     <dimen name="GameButton">15dp</dimen>
+    <dimen name="textScoreStyle">20dp</dimen>
 </resources>
