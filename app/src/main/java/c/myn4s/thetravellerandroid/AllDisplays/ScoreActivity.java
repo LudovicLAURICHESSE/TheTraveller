@@ -52,13 +52,12 @@ public class ScoreActivity extends AppCompatActivity {
             scoreTableLayout.addView(row);
         }
         Button rebootLeaderBoard = findViewById(R.id.rebootLeaderBoard);
-        /*rebootLeaderBoard.setOnClickListener(new View.OnClickListener() {
+        rebootLeaderBoard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 reinitialize(view);
-                setTableLayout(leaderBoard);
             }
-        });*/
+        });
 
 
     }
@@ -68,11 +67,32 @@ public class ScoreActivity extends AppCompatActivity {
 
     private void setTableLayout(List<Score> leaderBoard){
 
+        TableLayout scoreTableLayout = findViewById(R.id.tableLayoutScore);
+        TableRow row;
+        TextView date,points;
+        for(int i=0;i<10;i++){
+            if(i>=leaderBoard.size())break;
+            row = new TableRow(getApplicationContext());
+            date = new TextView(getApplicationContext());
+            points = new TextView(getApplicationContext());
+
+            date.setText(leaderBoard.get(i).getDate());
+            points.setText(""+leaderBoard.get(i).getPoint());
+            date.setGravity(Gravity.CENTER);
+            points.setGravity(Gravity.CENTER);
+
+            row.addView(date);
+            row.addView(points);
+            scoreTableLayout.addView(row);
+        }
     }
 
-    /*private void reinitialize(View view) {
-        tableScore.deleteFileScore();
-        tableScore.chargeScore();
-        leaderBoard=tableScore.getTableScore();
-    }*/
+    private void reinitialize(View view) {
+        tableScore.deleteFileScore(getApplicationContext());
+        Intent intent = new Intent(ScoreActivity.this,ScoreActivity.class);
+        intent.putExtra("tableScore",tableScore);
+        startActivity(intent);
+        setResult(Activity.RESULT_OK,intent);
+        finish();
+    }
 }

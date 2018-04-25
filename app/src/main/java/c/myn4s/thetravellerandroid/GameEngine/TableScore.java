@@ -3,6 +3,8 @@ package c.myn4s.thetravellerandroid.GameEngine;
 import android.content.Context;
 import android.util.Log;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -84,9 +86,11 @@ public class TableScore implements Serializable {
             tableScore.add(new Score("-",0));
         }
     }
-    /*public void deleteFileScore(){
-        File f = new File(appcontext.getExternalFilesDir(null)+"/allscore.txt");
+    public void deleteFileScore(Context context){
+        File f = new File(context.getExternalFilesDir(null)+"/allscore.txt");
         f.delete();
-    }*/
+        tableScore.removeAll(tableScore);
+        tableScore.add(new Score("-",0));
+    }
 
 }

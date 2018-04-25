@@ -17,6 +17,7 @@ import c.myn4s.thetravellerandroid.R;
 public class MainMenu extends AppCompatActivity {
     public static MediaPlayer song;
     private static final int PLAY_A_GAME_REQUEST = 145;
+    private static final int SHOW_SCORE_REQUEST = 285;
     private TableScore tableScore;
 
     @Override
@@ -38,7 +39,7 @@ public class MainMenu extends AppCompatActivity {
     public void showScores(View view) {
         Intent intent = new Intent(MainMenu.this,ScoreActivity.class);
         intent.putExtra("tableScore",tableScore);
-        startActivity(intent);
+        startActivityForResult(intent,SHOW_SCORE_REQUEST);
     }
 
     public void settings(View view) {
@@ -54,6 +55,11 @@ public class MainMenu extends AppCompatActivity {
                 if(s!=null){
                     tableScore.save(s);
                 }
+            }
+        }
+        if(requestCode == SHOW_SCORE_REQUEST){
+            if(resultCode==Activity.RESULT_OK){
+                tableScore = (TableScore)data.getSerializableExtra("tableScore");
             }
         }
     }
