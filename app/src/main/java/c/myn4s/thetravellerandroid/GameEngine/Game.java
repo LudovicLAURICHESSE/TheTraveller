@@ -8,6 +8,7 @@ import c.myn4s.thetravellerandroid.GameEngine.gameObjects.Foe;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.GameObject;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.Player;
 import c.myn4s.thetravellerandroid.GameEngine.gameObjects.PlayerIsDeadException;
+import c.myn4s.thetravellerandroid.GameEngine.gameObjects.Projectile;
 
 import android.graphics.Canvas;
 import android.util.Log;
@@ -22,6 +23,7 @@ public class Game {
     private boolean doUpdate = true;
 
     private List<GameObject> gameObjects;
+    private List<Projectile> projectiles;
     private Player player;
     private GameObjectGenerator creator;
     private Score score;
@@ -31,11 +33,14 @@ public class Game {
     private GameObject plateformeGauche = null;
     private GameObject plateformeDroite = null;
 
+    private int cptTire=0;
+
     public Game (){
         creator = new GameObjectGenerator(); //création de la fabrique de plateformes
         gameObjects = creator.initialize(); //remplissage de la liste de platefomes
         foes = new LinkedList<>();
         player = new Player(Grid.getBlocksSize(), Grid.getBlocksSize()); //instanciation du joueur
+        projectiles = creator.generateProjectile(player);
         score = new Score(); //initialisation du score
     }
 
@@ -52,6 +57,9 @@ public class Game {
 
             if (gameObjects.get(0).getEndX() < Grid.getDestructionPoint()) //suppression des plateformes sorties de l'écran
                 gameObjects.remove(0);
+
+            if (!foes.isEmpty() && foes.get(0).getEndX() < Grid.getDestructionPoint()) //suppression des plateformes sorties de l'écran
+                foes.remove(0);
 
             for (GameObject obj : gameObjects) { //déplacement des plateformes
                 obj.update();
@@ -73,12 +81,27 @@ public class Game {
                 doUpdate = false;
             }
 
+
             player.setMaxDescente(this.getMaxDescente()); //mise a jour de la limite de chute du joueur
             player.update(); //mise a jour du joueur
 
+            for (Projectile pro : projectiles) { //déplacement des plateformes
+                pro.update(player);
+            }
+
             for (Foe f: foes) {
                 f.update();
+                if (player.getKill()) {
+                    doUpdate = false;
+                }
+                if(f.isKilledByPlayer(player) && !(player.getEndY() > (f.getPosY()+(f.getSizeY()/2)))){
+                    foes.remove(f);
+                }else{
+                    f.killPlayer(player);
+                }
             }
+
+
         }
     }
 
@@ -107,6 +130,18 @@ public class Game {
     public void playerJump(){
         if (player.isGrounded()) //le joueur ne peut sauter que si il est au sol
             player.jump();
+    }
+
+    public void playerShot(){
+        if(!player.getIsShot() && !projectiles.isEmpty() && cptTire<3){
+            projectiles.get(cptTire).shoot();
+            player.setIsShot(false);
+            cptTire++;
+        }
+        else if(cptTire>=3){
+            cptTire=0;
+
+        }
     }
 
     private int getMaxDescente(){ //obtenir le sol le plus proche du joueur

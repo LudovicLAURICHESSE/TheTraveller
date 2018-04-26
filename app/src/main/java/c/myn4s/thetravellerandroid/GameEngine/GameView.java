@@ -125,7 +125,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 }
 
                 else {
-                    //Log.i("Myn4s", "Contact droite");
+                    game.playerShot();
                 }
                 break;
         }

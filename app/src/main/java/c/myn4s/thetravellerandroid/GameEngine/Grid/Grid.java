@@ -10,7 +10,7 @@ public abstract class Grid {
     private static int SCREEN_WIDTH;
     private static int SCREEN_HEIGHT;
 
-    private static int BLOCKS_ON_WIDTH = 7;
+    private static int BLOCKS_ON_WIDTH = 70;
     private static int BLOCKS_ON_HEIGHT;
     private static int BLOCKS_SIZE;
 

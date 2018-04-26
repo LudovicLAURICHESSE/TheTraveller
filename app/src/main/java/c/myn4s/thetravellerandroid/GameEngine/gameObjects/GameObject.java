@@ -32,7 +32,7 @@ public abstract class GameObject {
         setPosX(posX);
         setPosY(posY);
         setBlocksOnX(nbBlocsX);
-        setBlocksOnY(1); //la hauteur d'un objet n'a pas besoin de dépasser un block
+        setBlocksOnY(10); //la hauteur d'un objet n'a pas besoin de dépasser un block
 
         setSize(); //définition des tailles à l'écran
     }
