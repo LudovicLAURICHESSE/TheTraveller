@@ -26,7 +26,7 @@ public abstract class Grid {
         BLOCKS_SIZE = getScreenWidth() / getBlocksOnWidth();
         BLOCKS_ON_HEIGHT = getScreenHeight() / getBlocksSize();
 
-        GENERATION_POINT = (getBlocksOnWidth() + 5) * getBlocksSize();
+        GENERATION_POINT = (getBlocksOnWidth() + 50) * getBlocksSize();
 
     }
 

@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TheTraveller.iml" filepath="$PROJECT_DIR$/TheTraveller.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../TheTravellerAndroid/TheTravellerAndroid.iml" filepath="$PROJECT_DIR$/../TheTravellerAndroid/TheTravellerAndroid.iml" />
+      <module fileurl="file://C:\Users\Myn4s\Documents\000Documents\Code\TheTravellerAndroid\TheTraveller.iml" filepath="C:\Users\Myn4s\Documents\000Documents\Code\TheTravellerAndroid\TheTraveller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TheTravellerAndroid.iml" filepath="$PROJECT_DIR$/TheTravellerAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../TheTravellerAndroid/app/app.iml" filepath="$PROJECT_DIR$/../TheTravellerAndroid/app/app.iml" />
     </modules>
   </component>
 </project>

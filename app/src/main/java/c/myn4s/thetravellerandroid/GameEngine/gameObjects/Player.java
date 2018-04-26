@@ -11,21 +11,19 @@ import c.myn4s.thetravellerandroid.R;
  */
 
 public class Player extends GameObject {
-    private boolean first = true;
     private int movement = 0;
     private int jumpForce = -60;
     private int gravity = 5;
 
     private boolean grounded = true;
     private boolean kill = false;
-    private boolean isShot = false;
     private int maxDescente=0;
 
     public Player(int posX, int posY) {
         super(posX, posY, 10, 10);
 
-        this.posY = Grid.getBlocksSize();
-        this.posX = Grid.getBlocksSize();
+        this.posY = Grid.getBlocksSize()*10;
+        this.posX = Grid.getBlocksSize()*10;
         resourceInt = R.mipmap.player;
     }
 
@@ -67,10 +65,6 @@ public class Player extends GameObject {
     public boolean getKill(){return kill;}
 
     public void setKill(boolean val){kill = val;}
-
-    public boolean getIsShot(){return isShot;}
-
-    public void setIsShot(boolean val){isShot = val;}
 
     @Override
     public void setPosX(int posX){

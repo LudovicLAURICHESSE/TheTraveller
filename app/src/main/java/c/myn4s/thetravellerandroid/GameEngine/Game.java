@@ -13,6 +13,7 @@ import c.myn4s.thetravellerandroid.GameEngine.gameObjects.Projectile;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 /**
@@ -33,14 +34,14 @@ public class Game {
     private GameObject plateformeGauche = null;
     private GameObject plateformeDroite = null;
 
-    private int cptTire=0;
-
     public Game (){
         creator = new GameObjectGenerator(); //création de la fabrique de plateformes
-        gameObjects = creator.initialize(); //remplissage de la liste de platefomes
+        //création des listes
+        projectiles = new LinkedList<>();
         foes = new LinkedList<>();
+        gameObjects = creator.initialize(); //remplissage de la liste de platefomes
+
         player = new Player(Grid.getBlocksSize(), Grid.getBlocksSize()); //instanciation du joueur
-        projectiles = creator.generateProjectile(player);
         score = new Score(); //initialisation du score
     }
 
@@ -53,7 +54,6 @@ public class Game {
 
             Foe nFoe = creator.generateFoe();
             if (nFoe != null) foes.add(nFoe);
-
 
             if (gameObjects.get(0).getEndX() < Grid.getDestructionPoint()) //suppression des plateformes sorties de l'écran
                 gameObjects.remove(0);
@@ -81,13 +81,29 @@ public class Game {
                 doUpdate = false;
             }
 
-
             player.setMaxDescente(this.getMaxDescente()); //mise a jour de la limite de chute du joueur
             player.update(); //mise a jour du joueur
 
-            for (Projectile pro : projectiles) { //déplacement des plateformes
-                pro.update(player);
+            if (!projectiles.isEmpty() && projectiles.get(0).getPosX() > Grid.getScreenWidth())
+                projectiles.remove(0);
+
+
+            for (Projectile pro : projectiles) { //déplacement des projectiles
+                pro.update();
             }
+
+            LinkedList<Foe> foesToRemove = new LinkedList<>();
+            LinkedList<Projectile> projectilesToRemove = new LinkedList<>();
+            for (Projectile p : projectiles){
+                for (Foe f : foes){
+                    if (p.killFoe(f)) {
+                        projectilesToRemove.add(p);
+                        foesToRemove.add(f);
+                    }
+                }
+            }
+            projectiles.removeAll(projectilesToRemove);
+            foes.removeAll(foesToRemove);
 
             for (Foe f: foes) {
                 f.update();
@@ -100,21 +116,24 @@ public class Game {
                     f.killPlayer(player);
                 }
             }
-
-
         }
     }
 
 
     public void doDraw(Canvas canvas) { //dessiner le canvas avec tous ses éléments
-        for (GameObject obj: gameObjects) {
-            obj.doDraw(canvas);
-        }
+        for (GameObject obj: gameObjects) { obj.doDraw(canvas); }
 
         player.doDraw(canvas);
 
-        for (Foe obj: foes) {
-            obj.doDraw(canvas);
+        for (Foe obj: foes) { obj.doDraw(canvas); }
+
+//        for (Projectile p : projectiles){ p.doDraw(canvas);}
+        //il y avait visiblement un probleme d'accès concurrentiels dans la ligne précédente
+        //le code suivant n'a pas l'air de souffir du même problème.
+        Iterator<Projectile> iterP = projectiles.iterator();
+        while (iterP.hasNext()){
+            Projectile p = iterP.next();
+            p.doDraw(canvas);
         }
 
     }
@@ -124,6 +143,13 @@ public class Game {
             obj.resize();
         }
 
+        for (Foe obj: foes) {
+            obj.resize();
+        }
+
+        for (Projectile obj: projectiles) {
+            obj.resize();
+        }
         player.resize();
     }
 
@@ -132,15 +158,9 @@ public class Game {
             player.jump();
     }
 
-    public void playerShot(){
-        if(!player.getIsShot() && !projectiles.isEmpty() && cptTire<3){
-            projectiles.get(cptTire).shoot();
-            player.setIsShot(false);
-            cptTire++;
-        }
-        else if(cptTire>=3){
-            cptTire=0;
-
+    public void playerShot() {
+        if (projectiles.isEmpty() || projectiles.size() < 3) {
+            projectiles.add(creator.generateProjectile(player));
         }
     }
 
