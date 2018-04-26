@@ -21,6 +21,7 @@ import java.util.List;
  */
 
 public class Game {
+    private int timer = 0;
     private boolean doUpdate = true;
 
     private List<GameObject> gameObjects;
@@ -47,7 +48,13 @@ public class Game {
 
     public void update() throws PlayerIsDeadException {
         if (doUpdate) { //si le jeu continue
-            score.winPoint(1); //incrémentation du score
+
+            //gagner 1pt par seconde
+            timer++;
+            if (timer % 30 == 0){
+                timer = 0;
+                score.winPoint(1);
+            }
 
             GameObject nObj = creator.generate(); //appel de la fabrique (renvoie null si il n'y a pas besoin de générer de plateforme
             if (nObj != null) gameObjects.add(nObj);
@@ -105,6 +112,9 @@ public class Game {
             projectiles.removeAll(projectilesToRemove);
             foes.removeAll(foesToRemove);
 
+            //gagner 2 pts par ennemis tués par balle
+            score.winPoint(2*foesToRemove.size());
+
             for (Foe f: foes) {
                 f.update();
                 if (player.getKill()) {
@@ -112,6 +122,8 @@ public class Game {
                 }
                 if(f.isKilledByPlayer(player) && !(player.getEndY() > (f.getPosY()+(f.getSizeY()/2)))){
                     foes.remove(f);
+                    //gagner 5 pt par ennemi tués par saut
+                    score.winPoint(5);
                 }else{
                     f.killPlayer(player);
                 }
