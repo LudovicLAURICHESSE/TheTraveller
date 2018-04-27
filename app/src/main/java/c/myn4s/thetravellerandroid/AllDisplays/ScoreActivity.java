@@ -58,7 +58,9 @@ public class ScoreActivity extends AppCompatActivity {
                 reinitialize(view);
             }
         });
-
+        if(MainMenu.isSong){
+            MainMenu.song.start();
+        }
 
     }
     public void back(View view) {

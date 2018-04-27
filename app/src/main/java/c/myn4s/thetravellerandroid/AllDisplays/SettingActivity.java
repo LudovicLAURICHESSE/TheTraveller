@@ -16,8 +16,9 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_display);
         Switch songswitch=findViewById(R.id.switchSong);
-        if(MainMenu.song.isPlaying()){
+        if(MainMenu.isSong){
             songswitch.setChecked(true);
+            MainMenu.song.start();
         }
         else{
             songswitch.setChecked(false);
@@ -27,9 +28,11 @@ public class SettingActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean check) {
                 if(compoundButton.isChecked()){
                     MainMenu.song.start();
+                    MainMenu.isSong=true;
                 }
                 else{
                     MainMenu.song.pause();
+                    MainMenu.isSong=false;
                 }
             }
         });

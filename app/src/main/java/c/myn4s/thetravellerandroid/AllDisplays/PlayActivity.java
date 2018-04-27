@@ -58,6 +58,9 @@ public class PlayActivity extends AppCompatActivity {
                 endGame();
             }
         });
+        if(MainMenu.isSong){
+            MainMenu.song.start();
+        }
     }
 
     private void update(final int points){
@@ -90,6 +93,7 @@ public class PlayActivity extends AppCompatActivity {
         EndGameFragment end = new EndGameFragment();
         fragmentTransaction.add(R.id.fragment_container, end);
         fragmentTransaction.commit();
+
     }
 
 }

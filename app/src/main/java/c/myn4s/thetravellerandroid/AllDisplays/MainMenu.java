@@ -21,12 +21,14 @@ public class MainMenu extends AppCompatActivity {
     private static final int SHOW_SCORE_REQUEST = 285;
     private TableScore tableScore;
     private Spinner world, character;
+    public static boolean isSong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         song = MediaPlayer.create(MainMenu.this, R.raw.menusong);
         song.start();
+        isSong = true;
         song.setLooping(true);
         tableScore = new TableScore(getApplicationContext());
         tableScore.chargeScore();
@@ -37,17 +39,18 @@ public class MainMenu extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
-        song.start();
+        if(isSong)song.start();
     }
 
     public void onRestart() {
         super.onRestart();
-        song.start();
+        if(isSong)song.start();
     }
 
     public void onResume() {
         super.onResume();
-        song.start();
+        if(isSong)song.start();
+
     }
 
     public void onPause() {
@@ -57,7 +60,7 @@ public class MainMenu extends AppCompatActivity {
 
     public void onStop() {
         super.onStop();
-        song.pause();
+       //song.pause();
     }
 
     @Override
