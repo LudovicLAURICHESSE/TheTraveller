@@ -31,6 +31,37 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
     }
 
+    public void onStart() {
+        super.onStart();
+        song.start();
+    }
+
+    public void onRestart() {
+        super.onRestart();
+        song.start();
+    }
+
+    public void onResume() {
+        super.onResume();
+        song.start();
+    }
+
+    public void onPause() {
+        super.onPause();
+        song.pause();
+    }
+
+    public void onStop() {
+        super.onStop();
+        song.pause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onStop();
+        song.stop();
+    }
+
     public void playGame(View view) {
         Intent intent = new Intent(MainMenu.this,PlayActivity.class);
         startActivityForResult(intent, PLAY_A_GAME_REQUEST); //permet de récupérer le score à la fin de la partie
