@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import c.myn4s.thetravellerandroid.GameEngine.Game;
 import c.myn4s.thetravellerandroid.GameEngine.GameView;
 import c.myn4s.thetravellerandroid.GameEngine.Score;
 import c.myn4s.thetravellerandroid.R;
@@ -34,6 +35,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private Score score;
     private TextView scoreDisplayer;
+    private GameView inGame;
 
 
     @Override
@@ -45,15 +47,19 @@ public class PlayActivity extends AppCompatActivity {
         setContentView(R.layout.play_display);
         scoreDisplayer = findViewById(R.id.textViewScore);
         scoreDisplayer.setText("" + 0);
-        score = ((GameView) findViewById(R.id.gameview)).onGameOver();
-        score.addPropertyChangeListener(new PropertyChangeListener() {
+        inGame = ((GameView) findViewById(R.id.gameview));
+        inGame.onGameOver().addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent pce) {
                 update((int) pce.getNewValue());
             }
         });
-
-
+        inGame.endGame().addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent pce) {
+                endGame();
+            }
+        });
     }
+
     private void update(final int points){
 
         runOnUiThread(new Runnable() {
@@ -61,6 +67,7 @@ public class PlayActivity extends AppCompatActivity {
         public void run() {
             scoreDisplayer.setText("" + points);
         }});
+
     }
 
     public void back(View view) {
@@ -69,6 +76,12 @@ public class PlayActivity extends AppCompatActivity {
         data.putExtra("score", score);
         setResult(Activity.RESULT_OK,data);
         PlayActivity.this.finish();
+    }
+
+    public void playGame(View view) {
+            Intent intent = new Intent(this,PlayActivity.class);
+            startActivity(intent);
+            PlayActivity.this.finish();
     }
 
     public void endGame(){

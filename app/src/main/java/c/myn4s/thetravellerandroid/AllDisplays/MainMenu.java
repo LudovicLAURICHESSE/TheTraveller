@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Spinner;
 
 import c.myn4s.thetravellerandroid.GameEngine.Score;
 import c.myn4s.thetravellerandroid.GameEngine.TableScore;
@@ -19,6 +20,7 @@ public class MainMenu extends AppCompatActivity {
     private static final int PLAY_A_GAME_REQUEST = 145;
     private static final int SHOW_SCORE_REQUEST = 285;
     private TableScore tableScore;
+    private Spinner world, character;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,8 @@ public class MainMenu extends AppCompatActivity {
         tableScore = new TableScore(getApplicationContext());
         tableScore.chargeScore();
         setContentView(R.layout.activity_main_menu);
+        world = (Spinner) findViewById(R.id.spinnerWorld);
+        character = (Spinner) findViewById(R.id.spinnerChar);
     }
 
     public void onStart() {
@@ -58,12 +62,14 @@ public class MainMenu extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        super.onStop();
+        super.onDestroy();
         song.stop();
     }
 
     public void playGame(View view) {
         Intent intent = new Intent(MainMenu.this,PlayActivity.class);
+        intent.putExtra("worldChoise", String.valueOf(world.getSelectedItem()));
+        intent.putExtra("charChoise", String.valueOf(world.getSelectedItem()));
         startActivityForResult(intent, PLAY_A_GAME_REQUEST); //permet de récupérer le score à la fin de la partie
     }
 

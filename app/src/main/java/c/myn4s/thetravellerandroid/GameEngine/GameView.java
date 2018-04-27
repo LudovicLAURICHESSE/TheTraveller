@@ -27,6 +27,7 @@ import c.myn4s.thetravellerandroid.GameEngine.gameObjects.PlayerIsDeadException;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoopThread gameLoopThread;
     private Game game;
+    private BooListener inGame;
 
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -37,6 +38,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Grid.initialize(PlayActivity.getScreenWidth(), PlayActivity.getScreenHeight());
 
         game = new Game();
+
+        inGame = new BooListener(true);
 
         GameObject.setContext(context);
     }
@@ -58,9 +61,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         try {
             game.update();
+           if(!game.endGame()){
+               inGame.setBoo(false);
+           }
         } catch (PlayerIsDeadException e) {
             e.printStackTrace();
-
         }
     }
 
@@ -136,4 +141,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public Score onGameOver(){
         return game.onGameOver();
     }
+
+    public BooListener endGame(){return inGame;}
 }

@@ -119,6 +119,7 @@ public class Game {
                 f.update();
                 if (player.getKill()) {
                     doUpdate = false;
+                    throw new PlayerIsDeadException();
                 }
                 if(f.isKilledByPlayer(player) && !(player.getEndY() > (f.getPosY()+(f.getSizeY()/2)))){
                     foes.remove(f);
@@ -191,4 +192,8 @@ public class Game {
     }
 
     public Score onGameOver(){return score;} //renvoyer le score
+    public boolean endGame(){return doUpdate;} //renvoyer le score
 }
+
+
+
