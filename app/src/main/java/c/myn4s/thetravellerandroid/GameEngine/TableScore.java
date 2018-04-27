@@ -41,30 +41,36 @@ public class TableScore implements Serializable {
     }
 
     public void save(Score actualScore) {
-        for (int i = 0; i < 10; i++) {
-            if (tableScore.get(i).getPoint() <= actualScore.getPoint()) {
-                tableScore.add(i, actualScore);
-                break;
+        if(tableScore.size()>0) {
+            for (int i = 0; i < 10; i++) {
+                if (tableScore.get(i).getPoint() <= actualScore.getPoint()) {
+                    tableScore.add(i, actualScore);
+                    break;
+                }
             }
         }
-
-        File f = new File(appcontext.getExternalFilesDir(null)+"/allscore.txt");
-        f.delete();
-        try (
-                BufferedWriter scoreWritter = new BufferedWriter(new FileWriter(appcontext.getExternalFilesDir(null)+"/allscore.txt",false));)
-        {
-            for (int i = 0; i < tableScore.size(); i++) {
-                if (i > 10) break;
-                scoreWritter.write(tableScore.get(i).getDate() + "\n" + tableScore.get(i).getPoint() + "\n");
+        else tableScore.add(actualScore);
+        try {
+            File f = new File(appcontext.getExternalFilesDir(null) + "/allscore.txt");
+            if (f.exists()) f.delete();
+        }
+        catch (NullPointerException e){
+            Log.i("GDEBUG","Le fichier n'existe pas");
+        }
+        finally {
+            try (
+                    BufferedWriter scoreWritter = new BufferedWriter(new FileWriter(appcontext.getExternalFilesDir(null) + "/allscore.txt", false));) {
+                for (int i = 0; i < tableScore.size(); i++) {
+                    if (i > 10) break;
+                    scoreWritter.write(tableScore.get(i).getDate() + "\n" + tableScore.get(i).getPoint() + "\n");
+                }
+            } catch (IOException e) {
+                Log.i("GDEBUG", "ERREUR ECRITURE : " + e.getMessage());
+                e.printStackTrace();
+            } catch (Exception e) {
+                Log.i("GDEBUG", "ERREUR SAVE :" + e.getMessage());
+                e.printStackTrace();
             }
-        }
-        catch (IOException e) {
-            Log.i("GDEBUG","ERREUR ECRITURE : "+e.getMessage());
-            e.printStackTrace();
-        }
-        catch(Exception e){
-            Log.i("GDEBUG","ERREUR SAVE :"+e.getMessage());
-            e.printStackTrace();
         }
     }
 
